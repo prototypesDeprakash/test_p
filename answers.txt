@@ -1,0 +1,176 @@
+ans collab
+
+----------------
+package day1;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class firsttest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//E:\AllSelenium\chrome-win64\chrome-win64\chrome.exe
+	      // System.setProperty("webdriver.chrome.driver", "E:\\AllSelenium\\chrome-win64\\chrome-win64\\chrome.exe");
+	        
+	        // Create a new instance of ChromeDriver
+	        WebDriver driver = new ChromeDriver();
+
+
+
+	        driver.navigate().to("https://www.javatpoint.com");
+	        driver.manage().window().maximize() ;
+	        // Optional: wait for a few seconds to see the browser open
+	        try {
+	            Thread.sleep(5000); // wait for 5 seconds
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	        driver.navigate().back();
+	        try {
+	            Thread.sleep(5000); // wait for 5 seconds
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	        driver.navigate().forward();
+	        // Close the browser
+	        driver.quit(); // Always good practice to close the browser at the end
+	}
+
+}
+-----------------
+package day1;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Loginform {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		//driver.navigate().to("https://www.linkedin.com/login"); // this opens
+		//but we dont want to open 
+		// we need to get
+		//so we use
+		driver.get("https://www.linkedin.com/login"); //this get and stores the page elements
+		//somehow it still opens , i guess this opens and saves
+		WebElement username = driver.findElement(By.id("username")); //this saves the element in a variable
+		username.sendKeys("wtfbro"); //this opens and write our username wowo
+		WebElement password = driver.findElement(By.id("password"));
+		password.sendKeys("Nothing");
+		WebElement button = driver.findElement(By.xpath("//button[@type='submit']"));
+		button.click();
+		if(driver.getCurrentUrl().equalsIgnoreCase("https://www.linkedin.com/feed/")) {
+			System.out.print("Success");
+		}else {
+			System.out.print("Failed as expected");
+		}
+	}
+
+}
+-------------------
+package day1;
+
+import org.testng.annotations.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class SimpleReportTestng {
+
+	
+
+	WebDriver driver;
+@BeforeClass
+
+	public void testSetup()
+	{
+	System.setProperty("webdriver.chrome.driver", "E:\\swathi\\chromedriver.exe");
+	driver = new ChromeDriver();
+	}
+	@BeforeMethod
+	public void openBrowser()
+	{
+	driver.get("https://www.linkedin.com/login");
+	}
+	@Test
+	public void Login()
+	{
+	WebElement username = driver.findElement(By.id("username"));
+	WebElement password = driver.findElement(By.id("password"));
+	WebElement login = driver.findElement(By.xpath("//button[text()='Sign in']"));
+	username.sendKeys("swathiv@hi2.in");
+	password.sendKeys("xKj3H9:hdChqc3+");
+	login.click();
+	}
+	@AfterMethod
+	public void postLogin()
+	{
+	System.out.println(driver.getCurrentUrl());
+	}
+	@AfterClass
+	public void afterClass()
+	{
+	driver.quit();
+	}
+	}
+------------------------------------------------------------------------------
+package day1;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class testreportcreation {
+   
+
+    static ExtentTest test;
+    static ExtentReports report;
+
+    public static void main(String[] args) {
+        // Set up the path for the Spark report
+    	ExtentSparkReporter sparkReporter = new ExtentSparkReporter("E:\\results.html"); // Specify absolute path
+        report = new ExtentReports();
+        report.attachReporter(sparkReporter);
+
+        // Start test
+        test = report.createTest("ExtentDemo");
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.linkedin.com/login");
+
+        // Find elements
+        WebElement username = driver.findElement(By.id("username"));
+        WebElement password = driver.findElement(By.id("password"));
+        WebElement login = driver.findElement(By.xpath("//button[@type='submit']"));
+
+        // Perform actions
+        username.sendKeys("hegata8286@hagendes.com");
+        password.sendKeys("JeaQ'JNd<c-Vc7G");
+        login.click();
+
+        // Check URL
+        String actualUrl = "https://www.linkedin.com/feed/";
+        String expectedUrl = driver.getCurrentUrl();
+        if (actualUrl.equalsIgnoreCase(expectedUrl)) {
+            test.log(Status.PASS, "Navigated to the specified URL");
+        } else {
+            test.log(Status.FAIL, "Not navigated to the specified URL");
+        }
+
+        // Close the driver and end the test
+        
+        driver.close();
+        report.flush();
+    }
+}
+========================================================
